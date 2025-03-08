@@ -1,0 +1,58 @@
+local StarterGui = game:GetService("StarterGui")
+
+StarterGui:SetCore("SendNotification", {
+    Title = "lyy印钞机脚本🖥🦐", 
+    Text = "正在检测此服务器是否有印钞机...",
+    Icon = "rbxassetid://132553055403312",
+    Duration = 3
+})
+
+local foundPrinter = false
+for _, l in pairs(game:GetService('Workspace').Game.Entities.ItemPickup:GetChildren()) do
+    for _, v in pairs(l:GetChildren()) do
+        if v:IsA("MeshPart") or v:IsA("Part") then
+            for _, e in pairs(v:GetChildren()) do
+                if e:IsA("ProximityPrompt") and e.ObjectText == "Money Printer" then
+                    local epoh1 = v.CFrame
+                    local epoh2 = game:GetService('Players')
+                    local epoh3 = epoh2.LocalPlayer.Character.HumanoidRootPart
+                    epoh3.CFrame = epoh1
+                    foundPrinter = true
+
+                    StarterGui:SetCore("SendNotification", {
+                        Title = "印钞机", 
+                        Text = "已检测到印钞机",
+                        Icon = "rbxassetid://132553055403312",
+                        Duration = 5
+                    })
+                    break
+                end
+            end
+        end
+        if foundPrinter then break end
+    end
+    if foundPrinter then break end
+end
+
+if not foundPrinter then
+    StarterGui:SetCore("SendNotification", {
+        Title = "印钞机", 
+        Text = "未检测到印钞机",
+        Icon = "rbxassetid://132553055403312",
+        Duration = 5
+    })
+end
+
+wait(0.1)
+for _, v in pairs(game:GetService('Workspace').Game.Entities.ItemPickup:GetChildren()) do
+    for _, k in pairs(v:GetChildren()) do
+        for _, l in pairs(k:GetChildren()) do
+            if l:IsA("BillboardGui") then
+                l:Destroy()
+            end
+        end
+    end
+end
+local function teleportToAnotherServer(player)
+    TeleportService:Teleport(PLACE_ID, player)
+end
